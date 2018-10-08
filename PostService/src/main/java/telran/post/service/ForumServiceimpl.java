@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ IForumRSepository forum;
 	
 	@Override
 	public Post getPost(String id) {
-		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(id));
+		Post post=(Post) getall().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return null;
@@ -47,7 +48,7 @@ IForumRSepository forum;
 
 	@Override
 	public Post removePost(String id) {
-		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(id));
+		Post post=(Post) getall().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return null;
@@ -59,7 +60,7 @@ IForumRSepository forum;
 
 	@Override
 	public Post updatePost(PostUpdateDto updatePost) {
-		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(updatePost.getId()));
+		Post post=(Post) getall().filter(x->x.getId().equals(updatePost.getId()));
 		if(post==null)
 		{
 			return null;
@@ -70,7 +71,7 @@ IForumRSepository forum;
 
 	@Override
 	public boolean addLike(String id) {
-		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(id));
+		Post post=(Post) getall().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return false;
@@ -81,7 +82,7 @@ IForumRSepository forum;
 
 	@Override
 	public Post addComment(String id, newCommentDto newComment) {
-		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(newComment.getUser()));
+		Post post=(Post) getall().filter(x->x.getId().equals(newComment.getUser()));
 		 if(post==null)
 		 {
 			 return null;
@@ -112,5 +113,9 @@ IForumRSepository forum;
 		LocalDate to=LocalDate.parse(period.getTo());
 		return forum.findBycreateDateBetween(from,to);
 	}
-  
+	
+  public Stream<Post>getall()
+  {
+	  return forum.findAll().stream();
+  }
 }
