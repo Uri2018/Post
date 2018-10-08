@@ -59,7 +59,7 @@ IForumRSepository Forum;
 
 	@Override
 	public Post updatePost(PostUpdateDto updatePost) {
-		Post post=(Post) Forum.findByAuther(updatePost.getId());
+		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(updatePost.getId()));
 		if(post==null)
 		{
 			return null;
@@ -70,7 +70,7 @@ IForumRSepository Forum;
 
 	@Override
 	public boolean addLike(String id) {
-		Post post=(Post) Forum.findByAuther(id);
+		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return false;
@@ -81,7 +81,7 @@ IForumRSepository Forum;
 
 	@Override
 	public Post addComment(String id, newCommentDto newComment) {
-		Post post=(Post) Forum.findByAuther(id);
+		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(newComment.getUser()));
 		 if(post==null)
 		 {
 			 return null;
