@@ -21,7 +21,7 @@ import telran.post.service.ForumService;
 public class ForumServiceimpl implements ForumService{
 @Autowired
 
-IForumRSepository Forum;
+IForumRSepository forum;
 	@Override
 	public Post addNewPost(newPostDto newpost) {
 		Post p=new Post();
@@ -31,13 +31,13 @@ IForumRSepository Forum;
 				,LocalDateTime.now()
 				,newpost.getTags()
 				,p.getComments());
-		return Forum.save(post);
+		return forum.save(post);
 	}
 
 	
 	@Override
 	public Post getPost(String id) {
-		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(id));
+		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return null;
@@ -47,41 +47,41 @@ IForumRSepository Forum;
 
 	@Override
 	public Post removePost(String id) {
-		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(id));
+		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return null;
 		}
 		int res=Integer.parseInt(post.getId());	
-				Forum.deleteById(res);
+				forum.deleteById(res);
 		return post;
 	}
 
 	@Override
 	public Post updatePost(PostUpdateDto updatePost) {
-		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(updatePost.getId()));
+		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(updatePost.getId()));
 		if(post==null)
 		{
 			return null;
 		}
 		post.setContent(updatePost.getContent());
-		return Forum.save(post);
+		return forum.save(post);
 	}
 
 	@Override
 	public boolean addLike(String id) {
-		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(id));
+		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return false;
 		}
 		post.setLikes(+1);
-		return Forum.save(post) != null;
+		return forum.save(post) != null;
 	}
 
 	@Override
 	public Post addComment(String id, newCommentDto newComment) {
-		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(newComment.getUser()));
+		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(newComment.getUser()));
 		 if(post==null)
 		 {
 			 return null;
@@ -91,26 +91,26 @@ IForumRSepository Forum;
 		 Set<Comment>comments=new HashSet<>();
 		 comments.add(comment);
 		 post.setComments(comments);
-		return Forum.save(post);
+		return forum.save(post);
 	}
 
 	@Override
 	public
 	 Iterable<Post> findByTags(List<String> tags) {
-		return Forum.findByTagsIn(tags);
+		return forum.findByTagsIn(tags);
 	}
 
 	@Override
 	public Iterable<Post> findByAuther(String auther) {
 		
-		return Forum.findByAuther(auther);
+		return forum.findByAuther(auther);
 	}
 
 	@Override
 	public Iterable<Post> findByDate(DatePeriodDto period) {
 		LocalDate from=LocalDate.parse(period.getFrom());
 		LocalDate to=LocalDate.parse(period.getTo());
-		return Forum.findBycreateDateBetween(from,to);
+		return forum.findBycreateDateBetween(from,to);
 	}
 
 }
