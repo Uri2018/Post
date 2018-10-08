@@ -24,13 +24,13 @@ public class ForumServiceimpl implements ForumService{
 IForumRSepository forum;
 	@Override
 	public Post addNewPost(newPostDto newpost) {
-		Post p=new Post();
+		
 		Post post=new Post(newpost.getTitle()
 				, newpost.getContect()
 				,newpost.getAuther()
 				,LocalDateTime.now()
 				,newpost.getTags()
-				,p.getComments());
+				,null);
 		return forum.save(post);
 	}
 
@@ -112,5 +112,5 @@ IForumRSepository forum;
 		LocalDate to=LocalDate.parse(period.getTo());
 		return forum.findBycreateDateBetween(from,to);
 	}
-
+  
 }
