@@ -18,7 +18,7 @@ import telran.post.dto.newCommentDto;
 import telran.post.dto.newPostDto;
 import telran.post.service.ForumService;
 @Service
-public class PostServiceimpl implements ForumService{
+public class ForumServiceimpl implements ForumService{
 @Autowired
 
 IForumRSepository Forum;

@@ -22,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode
 
-@Document(collection="Forum")
+@Document(collection="Post")
 public class Post {
 @Id
 String id;

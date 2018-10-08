@@ -17,7 +17,7 @@ import telran.post.dto.newPostDto;
 import telran.post.service.ForumService;
 
 @RestController
-public class PostController {
+public class ForumController {
 @Autowired
 ForumService service;
 
