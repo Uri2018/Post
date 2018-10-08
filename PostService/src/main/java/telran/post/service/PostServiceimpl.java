@@ -1,4 +1,4 @@
-package telran.post.controller;
+package telran.post.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -34,15 +34,20 @@ IForumRSepository Forum;
 		return Forum.save(post);
 	}
 
+	
 	@Override
 	public Post getPost(String id) {
-		Post post=(Post) Forum.findByAuther(id);
+		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(id));
+		if(post==null)
+		{
+			return null;
+		}
 		return post;
 	}
 
 	@Override
 	public Post removePost(String id) {
-		Post post=(Post) Forum.findByAuther(id);
+		Post post=(Post) Forum.findAllBy().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return null;
@@ -60,7 +65,7 @@ IForumRSepository Forum;
 			return null;
 		}
 		post.setContent(updatePost.getContent());
-		return post;
+		return Forum.save(post);
 	}
 
 	@Override
@@ -71,7 +76,7 @@ IForumRSepository Forum;
 			return false;
 		}
 		post.setLikes(+1);
-		return true;
+		return Forum.save(post) != null;
 	}
 
 	@Override
@@ -86,7 +91,7 @@ IForumRSepository Forum;
 		 Set<Comment>comments=new HashSet<>();
 		 comments.add(comment);
 		 post.setComments(comments);
-		return post;
+		return Forum.save(post);
 	}
 
 	@Override
