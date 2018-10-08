@@ -81,7 +81,8 @@ IForumRSepository Forum;
 		 {
 			 return null;
 		 }
-		 Comment comment=new Comment(newComment.getUser(), newComment.getMessage());
+		 Comment comment=new Comment(newComment.getUser(), newComment.getMessage(), LocalDate.now()
+				 , post.getLikes());
 		 Set<Comment>comments=new HashSet<>();
 		 comments.add(comment);
 		 post.setComments(comments);
