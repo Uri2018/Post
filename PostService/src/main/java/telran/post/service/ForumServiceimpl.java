@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import javax.naming.NameNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +28,14 @@ IForumRSepository forum;
 	@Override
 	public Post addNewPost(newPostDto newpost) {
 		
-		Post post=new Post(newpost.getTitle()
-				, newpost.getContect()
-				,newpost.getAuther()
-				,LocalDateTime.now()
-				,newpost.getTags()
-				,null);
+		Post post=new Post(newpost.getTitle(), newpost.getContect(), newpost.getAuther(),newpost.getTags());
 		return forum.save(post);
 	}
 
 	
 	@Override
 	public Post getPost(String id) {
-		Post post=(Post) getall().filter(x->x.getId().equals(id));
+		Post post=(Post) forum.findAllBy().filter(x->x.getId().equals(id));
 		if(post==null)
 		{
 			return null;
@@ -47,20 +44,19 @@ IForumRSepository forum;
 	}
 
 	@Override
-	public Post removePost(String id) {
-		Post post=(Post) getall().filter(x->x.getId().equals(id));
+	public Post removePost(String id)  {
+		Post post=forum.findAll().get(Integer.parseInt(id));
 		if(post==null)
 		{
 			return null;
 		}
-		int res=Integer.parseInt(post.getId());	
-				forum.deleteById(res);
-		return post;
+			  forum.delete(post);
+				  return post;
 	}
 
 	@Override
 	public Post updatePost(PostUpdateDto updatePost) {
-		Post post=(Post) getall().filter(x->x.getId().equals(updatePost.getId()));
+		Post post=forum.findAll().get(Integer.parseInt(updatePost.getId()));
 		if(post==null)
 		{
 			return null;
@@ -71,18 +67,18 @@ IForumRSepository forum;
 
 	@Override
 	public boolean addLike(String id) {
-		Post post=(Post) getall().filter(x->x.getId().equals(id));
+		Post post=forum.findAll().get(Integer.parseInt(id));
 		if(post==null)
 		{
 			return false;
 		}
-		post.setLikes(+1);
+		post.setLikes(post.getLikes()+1);
 		return forum.save(post) != null;
 	}
 
 	@Override
 	public Post addComment(String id, newCommentDto newComment) {
-		Post post=(Post) getall().filter(x->x.getId().equals(newComment.getUser()));
+		Post post=forum.findAll().get(Integer.parseInt(id));
 		 if(post==null)
 		 {
 			 return null;
@@ -114,7 +110,7 @@ IForumRSepository forum;
 		return forum.findBycreateDateBetween(from,to);
 	}
 	
-  public Stream<Post>getall()
+  public Stream<Post>findAll()
   {
 	  return forum.findAll().stream();
   }

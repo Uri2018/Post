@@ -46,16 +46,23 @@ public boolean removeTag(String tag)
 
 
 
-public Post( String title, String content, String auther, LocalDateTime createDate, Set<String> tags,
-		 Set<Comment> comments) {
+public Post( String title, String content, String auther, Set<String> tags) {
 	
 	
 	this.title = title;
 	this.content = content;
 	this.auther = auther;
-	this.createDate = createDate;
+	createDate = LocalDateTime.now();
 	this.tags = tags;
-	this.comments = new HashSet<>();
+	comments = new HashSet<>();
+}
+public boolean addComment(Comment comment)
+{
+	return comments.add(comment);
 }
 
+public boolean addTag(String tag)
+{
+	return tags.add(tag);
+}
 }
