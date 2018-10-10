@@ -35,7 +35,7 @@ IForumRSepository forum;
 	
 	@Override
 	public Post getPost(String id) {
-		Post post=(Post) forum.findAll().get(Integer.parseInt(id));
+		Post post= forum.findAll().get(Integer.parseInt(id));
 		if(post==null)
 		{
 			return null;
