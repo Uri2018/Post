@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+
 @NoArgsConstructor
 @Setter
 @Getter
@@ -26,5 +26,13 @@ public class Comment {
 	{
 		likes++;
 	}
+
+	public Comment(String user, String message) {
+		this.user = user;
+		this.message = message;
+		datecreated=LocalDate.now();
+		likes=likes;
+	}
+	
 }
 
