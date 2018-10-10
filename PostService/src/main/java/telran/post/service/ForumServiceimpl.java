@@ -26,8 +26,7 @@ public class ForumServiceimpl implements ForumService{
 
 IForumRSepository forum;
 	@Override
-	public Post addNewPost(newPostDto newpost) {
-		
+	public Post addNewPost(newPostDto newpost) {	
 		Post post=new Post(newpost.getTitle(), newpost.getContect(), newpost.getAuther(),newpost.getTags());
 		return forum.save(post);
 	}
