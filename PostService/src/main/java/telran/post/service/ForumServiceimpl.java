@@ -12,7 +12,10 @@ import javax.naming.NameNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import telran.post.configoration.AccountConfigoration;
+import telran.post.configoration.AccountUserCredential;
 import telran.post.dau.IForumRSepository;
+import telran.post.dau.UserAccountRepository;
 import telran.post.domain.Comment;
 import telran.post.domain.Post;
 import telran.post.dto.DatePeriodDto;
@@ -20,16 +23,26 @@ import telran.post.dto.PostUpdateDto;
 import telran.post.dto.newCommentDto;
 import telran.post.dto.newPostDto;
 import telran.post.service.ForumService;
+import telran.post.service.filter.AutherticationFilter;
 @Service
 public class ForumServiceimpl implements ForumService{
 @Autowired
 
 IForumRSepository forum;
+UserAccountRepository userRepository;
+AutherticationFilter filter;
+AccountConfigoration accountconfigoration;
 	@Override
-	public Post addNewPost(newPostDto newpost) {	
-		Post post=convetToPost(newpost);
+	public Post addNewPost(newPostDto newpost,String auth) {	
+		AccountUserCredential credental= accountconfigoration.tokenDecode(auth);
+		if(userRepository.existsById(credental.getLogin()))
+		{
+			Post post=convetToPost(newpost);
 		 forum.save(post);
 		 return post;
+		}
+		
+		 return null;
 	}
 
 	
@@ -39,22 +52,36 @@ IForumRSepository forum;
 
 
 	@Override
-	public Post getPost(String id) {
-		return forum.findById(id).orElse(null);
+	public Post getPost(String id,String auth) {
+		AccountUserCredential credental= accountconfigoration.tokenDecode(auth);
+		if(userRepository.existsById(credental.getLogin()))
+		{
+			return forum.findById(id).orElse(null);
+		}
+		return null;
+		
 	}
 
 	@Override
-	public Post removePost(String id)  {
+	public Post removePost(String id,String auth)  {
+		AccountUserCredential credental= accountconfigoration.tokenDecode(auth);
+		if(userRepository.existsById(credental.getLogin()))
+		{
 		Post post=forum.findById(id).orElse(null);
 		if(post!=null)
 		{
 			forum.delete(post);
 		}
 				  return post;
+		}
+		return null;
 	}
 
 	@Override
-	public Post updatePost(PostUpdateDto updatePost) {
+	public Post updatePost(PostUpdateDto updatePost,String auth) {
+		AccountUserCredential credental= accountconfigoration.tokenDecode(auth);
+		if(userRepository.existsById(credental.getLogin()))
+		{
 		Post post=forum.findById(updatePost.getId()).orElse(null);
 		if(post!=null)
 		{
@@ -62,6 +89,8 @@ IForumRSepository forum;
 			forum.save(post);
 		}
 		return post;
+		}
+		return null;
 	}
 
 	@Override

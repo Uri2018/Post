@@ -22,7 +22,6 @@ import telran.post.configoration.AccountUserCredential;
 import telran.post.dau.UserAccountRepository;
 import telran.post.domain.UserAccount;
 @Service
-@WebFilter(urlPatterns= {"/forum/*"})
 @Order(1)
 public class AutherticationFilter implements Filter {
 @Autowired
@@ -43,6 +42,7 @@ public class AutherticationFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request=(HttpServletRequest)regs;
 		HttpServletResponse response=(HttpServletResponse)resp;
+		if(request.getServletPath().startsWith("/forum")) {
 		String auth=request.getHeader("Authorization");
 	AccountUserCredential	usercredental=userconfigoration .tokenDecode(auth);
        UserAccount userAccount=userAccountRepository.findById(usercredental.getLogin()).orElse(null);
@@ -56,6 +56,7 @@ public class AutherticationFilter implements Filter {
     	   {
     		   response.sendError(403,"Forbidden");
     	   }
+       }
        }
        chain.doFilter(request, response);
 	}

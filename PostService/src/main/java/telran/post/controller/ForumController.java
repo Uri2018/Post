@@ -27,26 +27,26 @@ public class ForumController {
 ForumService service;
 
 @PostMapping("/post")
-public Post addPost(@RequestBody newPostDto postdto)
+public Post addPost(@RequestBody newPostDto postdto,String auth)
 {
-	return service.addNewPost(postdto);
+	return service.addNewPost(postdto, auth);
 }
 
 @DeleteMapping("/post/{id}")
-public Post deletePost(@PathVariable String id)
+public Post deletePost(@PathVariable String id,String auth)
 {
-	return service.removePost(id);
+	return service.removePost(id, auth);
 }
 
 @GetMapping("/post/{id}")
-public Post getPost(@PathVariable String id)
+public Post getPost(@PathVariable String id,String auth)
 {
-	return service.getPost(id);
+	return service.getPost(id, auth);
 }
 @PutMapping("/post")
-public Post updatePost(@RequestBody PostUpdateDto update)
+public Post updatePost(@RequestBody PostUpdateDto update,String auth)
 {
-	return service.updatePost(update);	
+	return service.updatePost(update, auth);	
 }
 @PutMapping("/post/{id}/like")
 public boolean addLike(@PathVariable String id)

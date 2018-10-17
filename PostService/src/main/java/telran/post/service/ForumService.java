@@ -11,10 +11,10 @@ import telran.post.dto.newCommentDto;
 import telran.post.dto.newPostDto;
 
 public interface ForumService {
-Post addNewPost(newPostDto newpost);
-Post getPost(String id);
-Post removePost(String id) ;
-Post updatePost(PostUpdateDto updatePost);
+Post addNewPost(newPostDto newpost,String auth);
+Post getPost(String id,String auth);
+Post removePost(String id,String auth) ;
+Post updatePost(PostUpdateDto updatePost,String auth);
 boolean addLike(String id);
 Post addComment(String id,newCommentDto newComment);
 Iterable< Post>findByTags(List<String>tags);
