@@ -21,4 +21,5 @@ public UserProfileDto register( @RequestBody UserRegesterDto userRegesterDto, @ 
 {
 	return accountService.addUser(userRegesterDto, auth);
 }
+
 }
