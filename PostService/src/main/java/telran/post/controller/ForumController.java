@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,24 +28,24 @@ public class ForumController {
 ForumService service;
 
 @PostMapping("/post")
-public Post addPost(@RequestBody newPostDto postdto,String auth)
+public Post addPost(@RequestBody newPostDto postdto, @RequestHeader(value="Authorization")  String auth)
 {
 	return service.addNewPost(postdto, auth);
 }
 
 @DeleteMapping("/post/{id}")
-public Post deletePost(@PathVariable String id,String auth)
+public Post deletePost(@PathVariable String id, @RequestHeader(value="Authorization") String auth)
 {
 	return service.removePost(id, auth);
 }
 
 @GetMapping("/post/{id}")
-public Post getPost(@PathVariable String id,String auth)
+public Post getPost(@PathVariable String id,@RequestHeader(value="Authorization") String auth)
 {
 	return service.getPost(id, auth);
 }
 @PutMapping("/post")
-public Post updatePost(@RequestBody PostUpdateDto update,String auth)
+public Post updatePost(@RequestBody PostUpdateDto update, @RequestHeader(value="Authorization")  String auth)
 {
 	return service.updatePost(update, auth);	
 }
