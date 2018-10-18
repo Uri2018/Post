@@ -12,7 +12,7 @@ import telran.post.dto.newPostDto;
 
 public interface ForumService {
 Post addNewPost(newPostDto newpost,String auth);
-Post getPost(String id,String auth);
+Post getPost(String id);
 Post removePost(String id,String auth) ;
 Post updatePost(PostUpdateDto updatePost,String auth);
 boolean addLike(String id);

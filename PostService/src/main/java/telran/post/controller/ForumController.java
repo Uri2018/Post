@@ -40,9 +40,9 @@ public Post deletePost(@PathVariable String id, @RequestHeader(value="Authorizat
 }
 
 @GetMapping("/post/{id}")
-public Post getPost(@PathVariable String id,@RequestHeader(value="Authorization") String auth)
+public Post getPost(@PathVariable String id)
 {
-	return service.getPost(id, auth);
+	return service.getPost(id);
 }
 @PutMapping("/post")
 public Post updatePost(@RequestBody PostUpdateDto update, @RequestHeader(value="Authorization")  String auth)

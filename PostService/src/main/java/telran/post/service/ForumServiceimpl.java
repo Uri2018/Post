@@ -52,13 +52,10 @@ AccountConfigoration accountconfigoration;
 
 
 	@Override
-	public Post getPost(String id,String auth) {
-		AccountUserCredential credental= accountconfigoration.tokenDecode(auth);
-		if(userRepository.existsById(credental.getLogin()))
-		{
-			return forum.findById(id).orElse(null);
-		}
-		return null;
+	public Post getPost(String id) {
+		
+			
+		return  forum.findById(id).orElse(null);
 		
 	}
 
