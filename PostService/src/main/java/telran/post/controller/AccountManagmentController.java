@@ -2,6 +2,7 @@ package telran.post.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import telran.post.domain.UserAccount;
 import telran.post.dto.UserProfileDto;
 import telran.post.dto.UserRegesterDto;
 import telran.post.service.AccountService;
+import telran.post.service.ForbiddenExeception;
 
 @RestController
 @RequestMapping("/account")
@@ -25,12 +27,12 @@ public UserProfileDto register( @RequestBody UserRegesterDto userRegesterDto, @ 
 	return accountService.addUser(userRegesterDto, auth);
 }
 @DeleteMapping("/delete")
-public void deleteUser( @RequestHeader(value="Authorization") String auth)
+public UserProfileDto deleteUser(@PathVariable String id,@RequestHeader(value="Authorization") String auth) throws ForbiddenExeception
 {
-	accountService.deleteUser( auth);
+	return accountService.removeUser(id, auth);
 }
 @PutMapping("/editprofile")
-public UserAccount editUser( @ RequestBody UserAccount userAccount, @RequestHeader(value="Authorization")  String auth)
+public UserProfileDto editUser( @ RequestBody UserRegesterDto userAccount, @RequestHeader(value="Authorization")  String auth)
 {
 	return accountService.editUser(userAccount, auth);
 	

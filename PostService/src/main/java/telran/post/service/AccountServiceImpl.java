@@ -36,67 +36,33 @@ AccountConfigoration accountconfigoration;
 	}
 
 	@Override
-	public UserAccount editUser(UserAccount userAccount, String auth) {
+	public UserProfileDto editUser(UserRegesterDto userRegesterDto, String auth) {
 		AccountUserCredential credental= accountconfigoration.tokenDecode(auth);
-		if(userRepository.existsById(credental.getLogin()))
-		{
-			UserAccount user=userRepository.findById(credental.getLogin()).orElse(null);
-			if(user!=null)
-			{
-				String firstname=userAccount.getFirstname();
-				if(firstname!=null)
-				{
-			user.setFirstname(firstname);
-				}
-				String lastname=userAccount.getLastname();
-				if(lastname!=null)
-				{
-					user.setLastname(lastname);
-				}
-			String login=userAccount.getId();
-			if(login!=null)
-			{
-			user.setId(login);
-			}
-			String password=userAccount.getPassword();
-			if(password!=null)
-			{
-				user.setPassword(password);
-			}
-			LocalDateTime expDate=LocalDateTime.now();
-		if(expDate!=null)
-		{
-			user.setExpDate(expDate);
-		}
-			Set<String>roles=userAccount.getRoles();
-			if(roles!=null)
-			{
-				user.setRoles(roles);
-			}
-			
-			}
-			userRepository.save(user);
-			return user;
-		}
-		return null;
+		UserAccount useraccount=userRepository.findById(credental.getLogin()).get();
+		useraccount.setFirstname(userRegesterDto.getFirstname());
+		useraccount.setLastname(userRegesterDto.getLastname());
+		userRepository.save(useraccount);
+		return new UserProfileDto(credental.getLogin(), userRegesterDto.getFirstname(), userRegesterDto.getLastname());
 		
-	
 		
 		
 	}
 
 	@Override
-	public void deleteUser(  String auth) {
-		AccountUserCredential credental= accountconfigoration.tokenDecode(auth);
-		if(userRepository.existsById(credental.getLogin()))
-		{
-			UserAccount userAccount=	userRepository.findById(credental.getLogin()).orElse(null);
-			if(userAccount!=null)
-			{
-			userRepository.delete(userAccount);
-			}
+	public UserProfileDto removeUser(String id, String auth) {
+		// TODO remove forum user
+		AccountUserCredential credentials = accountconfigoration.tokenDecode(auth);
+		UserAccount user = userRepository.findById(credentials.getLogin()).get();
+		Set<String>roles = user.getRoles();
+		boolean hasRight = roles.stream().anyMatch(s -> "Admin".equals(s) || "Moderators".equals(s));
+		hasRight = hasRight || credentials.getLogin().equals(id);
+		if (!hasRight) {
+			throw new ForbiddenExeception();
 		}
-		
+		UserAccount userAccount = userRepository.findById(id).get();
+		userRepository.delete(userAccount);
+		return new UserProfileDto(userAccount.getId(), userAccount.getFirstname(), userAccount.getLastname());
 	}
+	
 
 }

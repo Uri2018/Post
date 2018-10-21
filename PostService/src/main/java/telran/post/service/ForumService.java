@@ -20,4 +20,5 @@ Post addComment(String id,newCommentDto newComment);
 Iterable< Post>findByTags(List<String>tags);
 Iterable<Post>findByAuther(String auther);
 Iterable<Post>findByDate(DatePeriodDto period);
+
 }
