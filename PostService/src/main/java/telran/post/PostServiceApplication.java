@@ -20,11 +20,15 @@ UserAccountRepository userAccountRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
-	 UserAccount userAccount=UserAccount.builder().id("admin")
+	 UserAccount userAccount=UserAccount
+			 .builder()
+			 .id("admin")
 			 .password("admin")
 			 .firstname("super")
 			 .lastname("admin")
 			 .role("admin")
+			 .role("User")
+			 .role("Moderator")
 			 .expDate(LocalDateTime.now().plusYears(25))
 			 .build();
 	 userAccountRepository.save(userAccount);
